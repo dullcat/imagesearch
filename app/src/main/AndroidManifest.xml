@@ -19,9 +19,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:parentActivityName=".activities.SearchActivity"
             android:name=".activities.FullImageActivity"
-            android:label="@string/title_activity_full_image" >
+            android:label="@string/title_activity_full_image"
+            android:parentActivityName=".activities.SearchActivity" >
+        </activity>
+        <activity
+            android:name=".activities.AdvancedOptionsActivity"
+            android:label="@string/title_activity_advanced_options" >
         </activity>
     </application>
 
