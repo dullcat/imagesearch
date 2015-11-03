@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.towu.imagesearch.R;
 import com.example.towu.imagesearch.adapters.ImageResultsAdapter;
+import com.example.towu.imagesearch.models.ImageOptions;
 import com.example.towu.imagesearch.models.ImageResult;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -31,6 +32,8 @@ public class SearchActivity extends AppCompatActivity {
     GridView gvResults;
     ArrayList<ImageResult> imageResults;
     ImageResultsAdapter aImageResults;
+    ImageOptions imageOptions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,23 @@ public class SearchActivity extends AppCompatActivity {
         imageResults = new ArrayList<>();
         aImageResults = new ImageResultsAdapter(this, imageResults);
         gvResults.setAdapter(aImageResults);
+
+        gvResults.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to your AdapterView
+                LoadMoreDataFromApi(page);
+                // or customLoadMoreDataFromApi(totalItemsCount);
+                return true; // ONLY if more data is actually being loaded; false otherwise.
+            }
+        });
+        imageOptions = new ImageOptions();
+    }
+
+    int pageIndex = 0;
+    private void LoadMoreDataFromApi(int index) {
+        fetchImages(pageIndex, false);
     }
 
     @Override
@@ -75,26 +95,64 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void onImageSearch(View view) {
+        pageIndex = 0;
+        fetchImages(0, true);
+    }
+
+    private void fetchImages(int index, final boolean clear) {
         String query = etSearch.getText().toString();
-        Toast.makeText(this, "Search String: "+ query, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Search String: " + query, Toast.LENGTH_SHORT).show();
         AsyncHttpClient client = new AsyncHttpClient();
-        String url = "https://ajax.googleapis.com/ajax/services/search/images?v=2.0&q="+query+"&rsz=8";
-        client.get(url, new JsonHttpResponseHandler(){
+        StringBuffer url = new StringBuffer("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q="+query+"&rsz=8&start="+index);
+        if (!imageOptions.size.isEmpty()){
+            url.append("&imgsz="+imageOptions.size);
+        }
+        if (!imageOptions.color.isEmpty()){
+            url.append("&imgcolor="+imageOptions.color);
+        }
+        if (!imageOptions.type.isEmpty()){
+            url.append("&imgtype="+imageOptions.type);
+        }
+        if (!imageOptions.site.isEmpty()){
+            url.append("&as_sitesearch="+imageOptions.size);
+        }
+        client.get(url.toString(), new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("DEBUG", response.toString());
                 JSONArray imageResultsJson = null;
                 try {
                     imageResultsJson = response.getJSONObject("responseData").getJSONArray("results");
-                    imageResults.clear();
-                    //imageResults.addAll(ImageResult.fromJsonArray(imageResultsJson));
-                    aImageResults.addAll(ImageResult.fromJsonArray(imageResultsJson));
-                    //aImageResults.notifyDataSetChanged();
+                    if (clear){
+                        imageResults.clear();
+                    }
+                    imageResults.addAll(ImageResult.fromJsonArray(imageResultsJson));
+                    //aImageResults.addAll(ImageResult.fromJsonArray(imageResultsJson));
+                    aImageResults.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.d("DEBUG", imageResults.toString());
             }
         });
+        pageIndex += 8;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ImageOptions options = (ImageOptions) data.getSerializableExtra("options");
+        imageOptions.size = options.size;
+        imageOptions.color = options.color;
+        imageOptions.type = options.type;
+        imageOptions.site = options.site;
+        Log.d("DEBUG", imageOptions.toString());
+
+    }
+
+    public void showAdvancedOptions(MenuItem item) {
+        Toast.makeText(this, "Advanced options selected!", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(SearchActivity.this, AdvancedOptionsActivity.class);
+        i.putExtra("options", imageOptions);
+        startActivityForResult(i, 200);
+
     }
 }

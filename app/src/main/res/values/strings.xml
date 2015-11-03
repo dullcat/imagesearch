@@ -7,4 +7,6 @@
     <string name="search_label">Search</string>
     <string name="image_title_label">Image Title</string>
     <string name="title_activity_full_image">Full Image</string>
+    <string name="title_activity_advanced_options">AdvancedOptionsActivity</string>
+    <string name="image_size_small" />
 </resources>

@@ -1,0 +1,108 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.towu.imagesearch.activities.AdvancedOptionsActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Image Size"
+        android:id="@+id/tvImageSize"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/etImageSize" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etImageSize"
+        android:hint="small, medium, large"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/etImageColor"
+        android:layout_alignStart="@+id/etImageColor" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Image Color"
+        android:id="@+id/tvImageColor"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/etImageSize"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/tvImageType" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etImageColor"
+        android:hint="red, green"
+        android:layout_below="@+id/etImageSize"
+        android:layout_toRightOf="@+id/tvImageColor"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Image Type"
+        android:id="@+id/tvImageType"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/etImageColor"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/etImageType" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etImageType"
+        android:hint="faces, photo, clip art, line art"
+        android:layout_below="@+id/etImageColor"
+        android:layout_toRightOf="@+id/tvImageColor"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Site Filter"
+        android:id="@+id/tvImageSite"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/tvImageType"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/etImageSite" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etImageSite"
+        android:hint="cnn.com"
+        android:layout_below="@+id/etImageType"
+        android:layout_alignLeft="@+id/etImageType"
+        android:layout_alignStart="@+id/etImageType"
+        android:layout_alignRight="@+id/etImageType"
+        android:layout_alignEnd="@+id/etImageType" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/btnSave"
+        android:onClick="saveOptions"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

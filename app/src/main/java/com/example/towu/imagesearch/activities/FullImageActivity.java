@@ -17,7 +17,7 @@ public class FullImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_image);
 
-        getActionBar().hide();
+        getSupportActionBar().hide();
         ImageResult image = (ImageResult) getIntent().getSerializableExtra("result");
         ImageView ivImage = (ImageView) findViewById(R.id.ivImageFull);
         ivImage.setImageResource(0);
